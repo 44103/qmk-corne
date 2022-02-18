@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  # Compile keymap.c to hex file
+  compile:
+    image: qmkfm/qmk_firmware:latest
+    volumes:
+      - ./qmk_firmware/keyboards:/qmk_firmware/keyboards
+      - ./qmk_firmware/.build:/qmk_firmware/.build
+    command: /bin/bash
