@@ -10,3 +10,4 @@ docker-compose run --rm compile
 ## references
 - [QMK Firmware](https://docs.qmk.fm/#/)
 - [QMK FirmwareをDockerでビルドする](https://qiita.com/akiakishitai/items/47292e29e6c4ed2d33dd)
+- [QMK Firmware で Raise/Lower と変換/無変換を同じキーに割り当てる](https://okapies.hateblo.jp/entry/2019/02/02/133953)
