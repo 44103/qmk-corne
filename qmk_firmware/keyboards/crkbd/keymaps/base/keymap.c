@@ -216,4 +216,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+const rgblight_segment_t PROGMEM raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    // undergrow
+    {0,   6, HSV_OFF},
+    {27,  6, HSV_OFF},
+    // backlight
+    {6,  21, HSV_RED},
+    {33, 21, HSV_RED}
+);
+
+const rgblight_segment_t PROGMEM lower_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    // undergrow
+    {0,   6, HSV_OFF},
+    {27,  6, HSV_OFF},
+    // backlight
+    {6,  21, HSV_GREEN},
+    {33, 21, HSV_GREEN}
+);
+
+const rgblight_segment_t PROGMEM adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    // undergrow
+    {0,   6, HSV_OFF},
+    {27,  6, HSV_OFF},
+    // backlight
+    {6,  21, HSV_BLUE},
+    {33, 21, HSV_BLUE}
+);
+
+const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    raise_layer,
+    lower_layer,
+    adjust_layer
+);
+
+void keyboard_post_init_user(void) {
+    rgblight_layers = rgb_layers;
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    rgblight_set_layer_state(0, layer_state_cmp(state, _RAISE));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _LOWER));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _ADJUST));
+    return state;
+}
 #endif // OLED_DRIVER_ENABLE
