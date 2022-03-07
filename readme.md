@@ -5,6 +5,11 @@ docker-compose run --rm compile qmk new-keymap
 docker-compose run --rm compile
 ```
 
+```
+git clone https://github.com/qmk/qmk_toolbox.git
+./avrdude.sh
+```
+
 ![layout](qmk_firmware/keyboards/crkbd/keymaps/base/layout.drawio.svg)
 
 ## references
