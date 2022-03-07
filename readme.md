@@ -10,3 +10,5 @@ docker-compose run --rm compile
 ## references
 - [QMK Firmware](https://docs.qmk.fm/#/)
 - [QMK FirmwareをDockerでビルドする](https://qiita.com/akiakishitai/items/47292e29e6c4ed2d33dd)
+- [QMK Firmware で Raise/Lower と変換/無変換を同じキーに割り当てる](https://okapies.hateblo.jp/entry/2019/02/02/133953)
+- [Corne CherryでレイヤーごとにLEDを切り替える](https://zenn.dev/eholic/articles/qmk-crkbd-led#rgb-lighting%E3%81%AE%E5%A0%B4%E5%90%88)
