@@ -27,7 +27,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_P0,   KC_P1,   KC_P2,   KC_P3, KC_PDOT, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, KC_TRNS,  KC_SPC,     KC_ENT,   MO(3), KC_RALT
+                                          KC_LGUI, KC_TRNS,  KC_SPC,     KC_ENT,  KC_TRNS, KC_RALT
                                       //`--------------------------'  `--------------------------'
    ),
    [2] = LAYOUT_split_3x6_3(
@@ -38,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,  KC_GRV,   KC_GT, KC_RBRC, KC_RCBR, KC_RPRN,                        KC_NO, KC_BSLS, KC_PIPE, KC_UNDS, KC_QUOT, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   MO(3),  KC_SPC,     KC_ENT, KC_TRNS, KC_RALT
+                                          KC_LGUI,  KC_TRNS,  KC_SPC,     KC_ENT, KC_TRNS, KC_RALT
                                       //`--------------------------'  `--------------------------'
    ),
    [3] = LAYOUT_split_3x6_3(
@@ -171,7 +171,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LOWER:
       if (record->event.pressed) {
         ls.is_lower_pressed = true;
-        ls.is_raise_pressed = true;
 
         layer_on(_LOWER);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
@@ -188,7 +187,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case RAISE:
       if (record->event.pressed) {
-        ls.is_lower_pressed = true;
         ls.is_raise_pressed = true;
 
         layer_on(_RAISE);
