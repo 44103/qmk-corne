@@ -19,3 +19,4 @@ git clone https://github.com/qmk/qmk_toolbox.git
 - [Corne CherryでレイヤーごとにLEDを切り替える](https://zenn.dev/eholic/articles/qmk-crkbd-led#rgb-lighting%E3%81%AE%E5%A0%B4%E5%90%88)
 - [WSL2だけで自作キーボードを楽しみたい](https://techracho.bpsinc.jp/miyason/2020_09_01/96931)
 - [feiz/avrdude.sh](https://gist.github.com/feiz/21293cbdff8a2e70b2d0af1389f2f279)
+- [QMK で slave 側でも process_record() を発火する](https://zenn.dev/teppeis/articles/2021-05-qmk-fire-process-record-in-slave)

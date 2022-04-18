@@ -7,6 +7,8 @@ enum custom_keycodes {
     ADJUST
 };
 
+bool should_process_keypress(void) { return true; }
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    [0] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
@@ -92,6 +94,7 @@ void oled_render_layer_state(void) {
 
 
 char keylog_str[24] = {};
+static uint16_t key_tap[RGBLED_NUM] = {0};
 
 const char code_to_name[60] = {
     ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
@@ -164,7 +167,27 @@ struct LayerState {
   bool is_raise_pressed;
 };
 
+
+struct MinMax {
+  uint16_t min;
+  uint16_t max;
+};
+
+static struct MinMax minmax = {0, 1};
+
 static struct LayerState ls = {false, false};
+static uint16_t key_to_led[MATRIX_ROWS][MATRIX_COLS] = {
+  // Left
+  { 6,  7,  8,  9, 10, 11},
+  {12, 13, 14, 15, 16, 17},
+  {18, 19, 20, 21, 22, 23},
+  {-1, -1, -1, 24, 25, 26},
+  // Right
+  {38, 37, 36, 35, 34, 33},
+  {44, 43, 42, 41, 40, 39},
+  {50, 49, 48, 47, 46, 45},
+  {-1, -1, -1, 53, 52, 51}
+};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -210,52 +233,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
   if (record->event.pressed) {
+    if (!(record->event.key.row == 3 || record->event.key.row == 7))
+      ++key_tap[key_to_led[record->event.key.row][record->event.key.col]];
+    for(int i=0; i<RGBLED_NUM; ++i) {
+      if(minmax.max < key_tap[i]) minmax.max = key_tap[i];
+      if(minmax.min > key_tap[i]) minmax.min = key_tap[i];
+    }
+    for(int i=0; i<RGBLED_NUM; ++i)
+      if ((0 <= i && i <= 5) || (27 <= i && i <= 32) || key_tap[i] == 0 || (24 <= i && i <= 26) || (51 <= i && i <= 53))
+        sethsv(0, 0, 0, (LED_TYPE *)&led[i]);
+      else
+        sethsv((key_tap[i]-minmax.min)*200/(minmax.max-minmax.min), 255, 80, (LED_TYPE *)&led[i]);
+    rgblight_set();
     set_keylog(keycode, record);
   }
   return true;
-}
-
-const rgblight_segment_t PROGMEM raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    // undergrow
-    {0,   6, HSV_OFF},
-    {27,  6, HSV_OFF},
-    // backlight
-    {6,  21, HSV_RED},
-    {33, 21, HSV_RED}
-);
-
-const rgblight_segment_t PROGMEM lower_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    // undergrow
-    {0,   6, HSV_OFF},
-    {27,  6, HSV_OFF},
-    // backlight
-    {6,  21, HSV_GREEN},
-    {33, 21, HSV_GREEN}
-);
-
-const rgblight_segment_t PROGMEM adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    // undergrow
-    {0,   6, HSV_OFF},
-    {27,  6, HSV_OFF},
-    // backlight
-    {6,  21, HSV_BLUE},
-    {33, 21, HSV_BLUE}
-);
-
-const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    raise_layer,
-    lower_layer,
-    adjust_layer
-);
-
-void keyboard_post_init_user(void) {
-    rgblight_layers = rgb_layers;
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state, _RAISE));
-    rgblight_set_layer_state(1, layer_state_cmp(state, _LOWER));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _ADJUST));
-    return state;
 }
 #endif // OLED_DRIVER_ENABLE
