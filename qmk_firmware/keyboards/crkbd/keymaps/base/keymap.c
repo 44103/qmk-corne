@@ -243,7 +243,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if ((0 <= i && i <= 5) || (27 <= i && i <= 32) || key_tap[i] == 0 || (24 <= i && i <= 26) || (51 <= i && i <= 53))
         sethsv(0, 0, 0, (LED_TYPE *)&led[i]);
       else
-        sethsv((key_tap[i]-minmax.min)*200/(minmax.max-minmax.min), 255, 80, (LED_TYPE *)&led[i]);
+        sethsv(170-(key_tap[i]-minmax.min)*170/(minmax.max-minmax.min), 255, 80, (LED_TYPE *)&led[i]);
     rgblight_set();
     set_keylog(keycode, record);
   }
