@@ -4,7 +4,7 @@ MODECMD='/mnt/c/Windows/System32/mode.com'
 
 COMPORT1=$(${MODECMD} | grep -o 'COM[0-9]*')
 COMPORT2=""
-while [ "$COMPORT2" = "" ];do
+while [ "$COMPORT2" = "" ]; do
   sleep 1
   printf "."
   COMPORT2=$(${MODECMD} | grep -v '${COMPORT1}' | grep -o 'COM[0-9]*')
