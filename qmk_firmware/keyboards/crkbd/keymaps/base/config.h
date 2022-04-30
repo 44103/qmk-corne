@@ -27,6 +27,3 @@
 
 #define LCA_DEL LCA(KC_DEL)
 #define LCA_PAUS LCA(KC_PAUS)
-
-#define LT_MO_1 LT(MO(1), KC_LANG2)
-#define LT_MO_2 LT(MO(2), KC_LANG1)
