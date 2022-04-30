@@ -1,4 +1,4 @@
-# avrdude.sh 
+# eeprom.sh 
 TOOLBOXDIR='./qmk_toolbox/'
 MODECMD='/mnt/c/Windows/System32/mode.com'
 
@@ -10,4 +10,5 @@ while [ "$COMPORT2" = "" ]; do
   COMPORT2=$(${MODECMD} | grep -v '${COMPORT1}' | grep -o 'COM[0-9]*')
 done
 echo $COMPORT2
-${TOOLBOXDIR}windows/QMK\ Toolbox/Resources/avrdude.exe -C ${TOOLBOXDIR}common/avrdude.conf -c avr109 -p m32u4 -P ${COMPORT2} -U flash:w:$*
+
+${TOOLBOXDIR}windows/QMK\ Toolbox/Resources/avrdude.exe -C ${TOOLBOXDIR}common/avrdude.conf -c avr109 -p m32u4 -P ${COMPORT2} -U eeprom:w:./qmk_firmware/quantum/split_common/eeprom-$1hand.eep:a
