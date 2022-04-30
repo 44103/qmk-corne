@@ -27,7 +27,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,                        KC_P0,   KC_P1,   KC_P2,   KC_P3, KC_PDOT, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, KC_TRNS,  KC_SPC,     KC_ENT,   MO(3), KC_RALT
+                                          KC_LGUI, KC_TRNS,  KC_SPC,     KC_ENT,  KC_TRNS, KC_RALT
                                       //`--------------------------'  `--------------------------'
    ),
    [2] = LAYOUT_split_3x6_3(
@@ -38,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,  KC_GRV,   KC_GT, KC_RBRC, KC_RCBR, KC_RPRN,                        KC_NO, KC_BSLS, KC_PIPE, KC_UNDS, KC_QUOT, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   MO(3),  KC_SPC,     KC_ENT, KC_TRNS, KC_RALT
+                                          KC_LGUI,  KC_TRNS,  KC_SPC,     KC_ENT, KC_TRNS, KC_RALT
                                       //`--------------------------'  `--------------------------'
    ),
    [3] = LAYOUT_split_3x6_3(
@@ -171,7 +171,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LOWER:
       if (record->event.pressed) {
         ls.is_lower_pressed = true;
-        ls.is_raise_pressed = true;
 
         layer_on(_LOWER);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
@@ -188,7 +187,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case RAISE:
       if (record->event.pressed) {
-        ls.is_lower_pressed = true;
         ls.is_raise_pressed = true;
 
         layer_on(_RAISE);
@@ -217,34 +215,39 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+const rgblight_segment_t PROGMEM qwerty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, RGBLED_NUM, HSV_OFF}
+);
+
 const rgblight_segment_t PROGMEM raise_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     // undergrow
-    {0,   6, HSV_OFF},
-    {27,  6, HSV_OFF},
+    {0,   6, HSV_RED},
+    {27,  6, HSV_RED},
     // backlight
-    {6,  21, HSV_RED},
-    {33, 21, HSV_RED}
+    {6,  21, HSV_OFF},
+    {33, 21, HSV_OFF}
 );
 
 const rgblight_segment_t PROGMEM lower_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     // undergrow
-    {0,   6, HSV_OFF},
-    {27,  6, HSV_OFF},
+    {0,   6, HSV_GREEN},
+    {27,  6, HSV_GREEN},
     // backlight
-    {6,  21, HSV_GREEN},
-    {33, 21, HSV_GREEN}
+    {6,  21, HSV_OFF},
+    {33, 21, HSV_OFF}
 );
 
 const rgblight_segment_t PROGMEM adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     // undergrow
-    {0,   6, HSV_OFF},
-    {27,  6, HSV_OFF},
+    {0,   6, HSV_BLUE},
+    {27,  6, HSV_BLUE},
     // backlight
-    {6,  21, HSV_BLUE},
-    {33, 21, HSV_BLUE}
+    {6,  21, HSV_OFF},
+    {33, 21, HSV_OFF}
 );
 
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    qwerty_layer,
     raise_layer,
     lower_layer,
     adjust_layer
@@ -255,9 +258,10 @@ void keyboard_post_init_user(void) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state, _RAISE));
-    rgblight_set_layer_state(1, layer_state_cmp(state, _LOWER));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _ADJUST));
+    rgblight_set_layer_state(0, layer_state_cmp(state, _QWERTY));
+    rgblight_set_layer_state(1, layer_state_cmp(state, _RAISE));
+    rgblight_set_layer_state(2, layer_state_cmp(state, _LOWER));
+    rgblight_set_layer_state(3, layer_state_cmp(state, _ADJUST));
     return state;
 }
 #endif // OLED_DRIVER_ENABLE
