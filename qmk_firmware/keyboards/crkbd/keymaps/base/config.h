@@ -31,3 +31,4 @@
 #define CTL_X LCTL(KC_X)
 #define CTL_C LCTL(KC_C)
 #define CTL_V LCTL(KC_V)
+#define ALT_TAB LALT(KC_TAB)
