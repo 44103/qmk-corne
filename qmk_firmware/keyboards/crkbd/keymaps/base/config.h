@@ -27,3 +27,7 @@
 
 #define LCA_DEL LCA(KC_DEL)
 #define LCA_PAUS LCA(KC_PAUS)
+#define CTL_Z LCTL(KC_Z)
+#define CTL_X LCTL(KC_X)
+#define CTL_C LCTL(KC_C)
+#define CTL_V LCTL(KC_V)
